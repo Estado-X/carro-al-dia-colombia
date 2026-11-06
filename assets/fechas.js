@@ -52,7 +52,7 @@
 
   /* Próxima revisión.
      estado: 'primera' (aún no le toca la primera), 'anual' (calculada con la última revisión),
-     'falta-ultima' (ya pasó la primera y no sabemos cuándo hizo la última),
+     'falta-ultima' (ya pasó la primera y no sabemos cuándo hizo la última: fecha = la primera, días negativos),
      'error' (la última revisión es anterior a la matrícula o posterior a hoy). */
   function revision(tipo, matricula, ultima, hoy) {
     var p = primeraRevision(tipo, matricula);
@@ -66,7 +66,8 @@
     } else if (diasEntre(hoy, p.fecha) >= 0) {
       r.estado = 'primera'; r.fecha = p.fecha;
     } else {
-      r.estado = 'falta-ultima'; r.fecha = null;
+      // Sin la última revisión no sabemos si la hizo: se muestra vencida desde la primera.
+      r.estado = 'falta-ultima'; r.fecha = p.fecha;
     }
     if (r.fecha) r.dias = diasEntre(hoy, r.fecha);
     return r;

@@ -60,6 +60,8 @@ test('revisión: moto matriculada el 29/02/2024 → primera el 28/02/2026, ya pa
   const sin = F.revision('moto', f(29, 2, 2024), null, f(6, 11, 2026));
   assert.strictEqual(sin.estado, 'falta-ultima');
   assert.strictEqual(c(sin.primera), '28/02/2026');
+  assert.strictEqual(c(sin.fecha), '28/02/2026');
+  assert.ok(sin.dias < 0);
   const con = F.revision('moto', f(29, 2, 2024), f(27, 2, 2026), f(6, 11, 2026));
   assert.strictEqual(con.estado, 'anual');
   assert.strictEqual(c(con.fecha), '27/02/2027');
@@ -138,4 +140,13 @@ test('calendario .ics: dobla líneas largas con tildes sin partir caracteres', (
   const unido = r.texto.replace(/\r\n /g, '');
   assert.ok(unido.includes('SUMMARY:' + largo));
   r.texto.split('\r\n').forEach((l) => assert.ok(Buffer.byteLength(l, 'utf8') <= 75));
+});
+
+test('sin última revisión y la primera ya pasó: queda vencida desde la primera', () => {
+  // Particular matriculado el 01/03/2021 → primera el 01/03/2026; hoy 06/11/2026
+  const r = F.revision('particular', f(1, 3, 2021), null, f(6, 11, 2026));
+  assert.strictEqual(r.estado, 'falta-ultima');
+  assert.strictEqual(c(r.fecha), '01/03/2026');
+  assert.strictEqual(r.dias, -250);
+  assert.strictEqual(F.semaforo(r.dias), 'vencido');
 });

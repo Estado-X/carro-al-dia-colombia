@@ -60,7 +60,8 @@
         $('#ultima').classList.add('mal');
         pintar('c-rtm', 'vacio', 'Revisa la fecha de tu última revisión', '', 'No puede ser anterior a la matrícula ni posterior a hoy.');
       } else if (r.estado === 'falta-ultima') {
-        pintar('c-rtm', 'pronto', 'Ya te toca cada año', '', base + ' Desde entonces es anual: escribe la fecha de tu última revisión para saber cuándo vence.');
+        pintar('c-rtm', 'vencido', 'Venció el ' + F.conDia(r.fecha), cap(F.enDias(r.dias)),
+          base + ' Desde entonces es cada año. Si ya la hiciste, escribe la fecha de tu última revisión.');
       } else {
         var titulo = r.estado === 'primera' ? 'Primera revisión técnico-mecánica' : 'Revisión técnico-mecánica';
         var nota = r.estado === 'primera'
