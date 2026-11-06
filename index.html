@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carro al día: que no se te pase el SOAT ni la tecnomecánica · Estado X</title>
+<meta name="description" content="Calcula gratis cuándo vence tu SOAT y cuándo te toca la revisión técnico-mecánica de tu carro, moto o vehículo de servicio público, y descarga los recordatorios para tu calendario.">
+<meta property="og:title" content="Que no se te pase el SOAT ni la tecnomecánica">
+<meta property="og:description" content="Las dos fechas de tu vehículo, cuántos días faltan y un calendario con recordatorios. Todo en tu navegador.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="banda">
+  <div class="contenedor banda__in">
+    <p class="kicker">Herramienta abierta · Estado X</p>
+    <h1>Que no se te pase el SOAT ni la <em>tecnomecánica</em></h1>
+    <p class="banda__sub">Escribe tres fechas de tu vehículo y la página te dice cuándo vence tu SOAT, cuándo te toca la revisión técnico-mecánica y de emisiones contaminantes y cuántos días faltan. Luego descargas los recordatorios para tu calendario.</p>
+  </div>
+</header>
+
+<main class="contenedor">
+  <section class="bloque" aria-labelledby="t-tipo">
+    <h2 id="t-tipo"><span class="paso">1</span> ¿Qué vehículo tienes?</h2>
+    <div class="opciones" role="radiogroup" aria-labelledby="t-tipo">
+      <label class="opcion"><input type="radio" name="tipo" value="particular" checked><span class="opcion__in"><strong>Carro particular</strong><span>Carros, camionetas y camperos de servicio particular. Primera revisión a los 5 años de la matrícula.</span></span></label>
+      <label class="opcion"><input type="radio" name="tipo" value="moto"><span class="opcion__in"><strong>Moto</strong><span>Motos y similares, como motocarros y mototriciclos. Primera revisión a los 2 años de la matrícula.</span></span></label>
+      <label class="opcion"><input type="radio" name="tipo" value="publico"><span class="opcion__in"><strong>Servicio público</strong><span>Taxis, buses, busetas y vehículos de carga o pasajeros de servicio público. Primera revisión a los 2 años.</span></span></label>
+    </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-fechas">
+    <div class="tarjeta">
+      <h2 id="t-fechas"><span class="paso">2</span> Tus fechas</h2>
+      <p class="ayuda">Las encuentras en la licencia de tránsito (tarjeta de propiedad), en tu póliza del SOAT o en la consulta por placa del RUNT.</p>
+      <div class="campos">
+        <div class="campo"><label for="matricula">Fecha de matrícula</label><input type="date" id="matricula" aria-describedby="a-matricula"><p class="campo__ayuda" id="a-matricula">Está en la licencia de tránsito.</p></div>
+        <div class="campo"><label for="soat">Fecha de vencimiento del SOAT</label><input type="date" id="soat" aria-describedby="a-soat"><p class="campo__ayuda" id="a-soat">Está en tu póliza («vigencia hasta»).</p></div>
+        <div class="campo"><label for="ultima">Fecha de tu última revisión técnico-mecánica (si ya la hiciste)</label><input type="date" id="ultima" aria-describedby="a-ultima"><p class="campo__ayuda" id="a-ultima">Está en el certificado. Déjala vacía si tu vehículo aún no ha hecho la primera.</p></div>
+        <div class="campo"><label for="placa">Placa (opcional)</label><input type="text" id="placa" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABC123" aria-describedby="a-placa"><p class="campo__ayuda" id="a-placa">Solo para el nombre de los recordatorios.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-resultado">
+    <h2 id="t-resultado"><span class="paso">3</span> Lo que se te vence</h2>
+    <div class="dos" aria-live="polite">
+      <article class="tarjeta vence" id="c-soat" data-estado="vacio" aria-labelledby="t-soat">
+        <p class="vence__etq" id="t-soat">SOAT</p>
+        <p class="vence__fecha" id="soat-fecha">Escribe la fecha de vencimiento</p>
+        <p class="vence__dias" id="soat-dias"></p>
+        <p class="vence__nota" id="soat-nota">El SOAT dura como mínimo un año. Sin él no puedes circular.</p>
+      </article>
+      <article class="tarjeta vence" id="c-rtm" data-estado="vacio" aria-labelledby="t-rtm">
+        <p class="vence__etq" id="t-rtm">Revisión técnico-mecánica y de emisiones</p>
+        <p class="vence__fecha" id="rtm-fecha">Escribe la fecha de matrícula</p>
+        <p class="vence__dias" id="rtm-dias"></p>
+        <p class="vence__nota" id="rtm-nota"></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-cal">
+    <div class="tarjeta">
+      <h2 id="t-cal"><span class="paso">4</span> Recordatorios en tu calendario</h2>
+      <p class="ayuda">Descarga un archivo de calendario (.ics) y ábrelo con Google Calendar, Outlook o el calendario de tu celular. Trae cada vencimiento y un aviso aparte en cada fecha que escojas, con alarma a las 9:00 a. m. del día anterior.</p>
+      <p class="etq" id="t-avisos">Avísame antes</p>
+      <div class="chips" role="group" aria-labelledby="t-avisos">
+        <label class="chip"><input type="checkbox" name="aviso" value="60"><span>60 días</span></label>
+        <label class="chip"><input type="checkbox" name="aviso" value="30" checked><span>30 días</span></label>
+        <label class="chip"><input type="checkbox" name="aviso" value="15"><span>15 días</span></label>
+        <label class="chip"><input type="checkbox" name="aviso" value="7" checked><span>7 días</span></label>
+        <label class="chip"><input type="checkbox" name="aviso" value="1"><span>1 día</span></label>
+      </div>
+      <ol class="linea" id="linea" aria-label="Lo que trae el calendario"></ol>
+      <div class="acciones">
+        <button type="button" class="boton" id="descargar" disabled>Descargar el calendario (.ics)</button>
+      </div>
+      <p class="nota" id="nota-cal">El archivo se arma en tu navegador: nada de lo que escribes sale de tu computador ni se guarda. Cuando renueves el SOAT o hagas la revisión, vuelve, cambia la fecha y descarga el calendario otra vez.</p>
+    </div>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-oficial">
+    <div class="tarjeta">
+      <h2 id="t-oficial">Confírmalo en las fuentes oficiales</h2>
+      <p class="ayuda">Esta página no consulta ninguna base de datos. Para ver lo que dice el registro oficial de tu vehículo o si tienes comparendos, entra tú (piden la placa o tu documento y una verificación).</p>
+      <div class="dos enlaces">
+        <a class="enlace-oficial" href="https://portalpublico.runt.gov.co/#/consulta-vehiculo/consulta/consulta-ciudadana" target="_blank" rel="noopener"><strong>RUNT · consulta por placa</strong><span>SOAT y revisión técnico-mecánica vigentes, según el Registro Único Nacional de Tránsito.</span></a>
+        <a class="enlace-oficial" href="https://www.fcm.org.co/simit/#/estado-cuenta" target="_blank" rel="noopener"><strong>SIMIT · estado de cuenta</strong><span>Multas y comparendos de tránsito a tu nombre o de tu placa, de la Federación Colombiana de Municipios.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque dos">
+    <div class="tarjeta">
+      <h2>Las normas</h2>
+      <ul class="reglas">
+        <li><strong>Ley 769 de 2002 (Código Nacional de Tránsito), art. 51:</strong> todos los vehículos automotores hacen la revisión técnico-mecánica y de emisiones contaminantes cada año, salvo lo del artículo 52.</li>
+        <li><strong>Ley 769 de 2002, art. 52, modificado por el art. 179 de la Ley 2294 de 2023:</strong> los vehículos nuevos de servicio particular (menos motos) hacen la primera revisión a partir del quinto año desde la matrícula; los de servicio público, las motos y similares, al cumplir dos años.</li>
+        <li><strong>Ministerio de Transporte, Circular Externa del 19 de octubre de 2023:</strong> los carros particulares matriculados entre el 20/05/2017 y el 19/05/2018 hacen la primera a los 6 años (regla anterior del Decreto 19 de 2012). La página lo aplica.</li>
+        <li><strong>Decreto 663 de 1993, art. 193, num. 2:</strong> la póliza del SOAT dura cuando menos un año.</li>
+        <li><strong>Ley 769 de 2002, art. 131:</strong> circular sin el SOAT (D.2) o sin la revisión al día (C.35) tiene multa y el vehículo es inmovilizado.</li>
+      </ul>
+    </div>
+    <div class="tarjeta">
+      <h2>Límites</h2>
+      <ul class="reglas">
+        <li>Es una ayuda para no olvidar fechas, <strong>no un certificado</strong>. Lo que vale es lo que diga el RUNT.</li>
+        <li>No consulta el RUNT ni el SIMIT, no guarda tus fechas y no te manda avisos: los avisos los da tu calendario.</li>
+        <li>No cubre el impuesto vehicular: cada departamento (y Bogotá) fija sus propias fechas.</li>
+        <li>No cubre multas ni comparendos: para eso está el SIMIT.</li>
+        <li>Cubre carros particulares, motos y vehículos de servicio público matriculados como nuevos. No cubre placas extranjeras, vehículos oficiales o diplomáticos, ni casos especiales (por ejemplo, la exención de emisiones de los vehículos nuevos a gas).</li>
+        <li>Si tu fecha cae un 29 de febrero, en los años que no son bisiestos se toma el 28 de febrero, para que el aviso llegue antes.</li>
+        <li>La primera revisión de los carros particulares pasó de 6 a 5 años con el Plan Nacional de Desarrollo 2022-2026 (Ley 2294 de 2023). Si la regla cambia, la página se actualiza en su repositorio.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor pie__in">
+    <p>Todo pasa en tu navegador: lo que escribes no se envía a ningún lado ni se guarda.</p>
+    <p>Inspirada en <a href="https://github.com/hargata/lubelog" target="_blank" rel="noopener">LubeLogger</a> de Hargata Softworks (licencia MIT). Código abierto en <a href="https://github.com/Estado-X/carro-al-dia-colombia" target="_blank" rel="noopener">GitHub</a>.</p>
+    <p class="firma">Hecho por <a href="https://estadox.com" target="_blank" rel="noopener">Estado <em>X</em></a></p>
+  </div>
+</footer>
+<script src="assets/fechas.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
